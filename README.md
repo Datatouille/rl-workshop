@@ -1,15 +1,20 @@
 # Bangkok School of AI - Reinforcement Learning Workshop
 
 ## Session 1 Discrete States and Actions
+(30 min)
 * [Reinforcement learning versus other approaches](https://web.stanford.edu/class/cs234/slides/cs234_2018_l1.pdf)
 * Use cases for reinforcement learning e.g. games, robotics, ads biddings, stock trading, etc.
 * A word of caution:
     * [Why is reinforcement learning flawed](https://thegradient.pub/why-rl-is-flawed/)
     * [Simple random search provides a competitive approach to reinforcement learning](https://arxiv.org/abs/1803.07055)
-* Gridworld example (in code and physical activities) to explain:
+(60 min)
+* Windy Gridworld example (in code and physical activities with paper and dice) to explain:
     * Problems: MDPs, states, actions, rewards, discount factors
     * Solutions: policy, state values, (state-action) values, Bellman and optimality equations
-* OpenAI Gym toy environment to explain temporal difference learning: sarsa, q-learning, expected sarsa
+* Homework: what are some ways to find optimal policy? (Hint: heuristics, monte carlo, temporal difference)
+
+## Session 2 Discrete States and Actions
+* OpenAI Gym toy environment to explain solutions: monte carlo, sarsa, q-learning, expected sarsa
 * Homework: solve an environment with discrete states and actions such as:
     * FrozenLake-v0
     * Taxi-v2
@@ -24,7 +29,7 @@
     * What algorithms did you use to solve the environment and why?
     * How many episodes did you solve it in? Can you improve the performance? (Tweaking discount factor, learning rate, using Monte Carlo instead of TD)
     
-## Session 1.5 Neural Networks in Pytorch
+## Session 2.5 Neural Networks in Pytorch
 * Tensor operations
 * Feedforward 
 * Activation functions
@@ -32,21 +37,22 @@
 * Backpropagation
 * Why is deeper usually better? Spiral example
 
-## Session 2 Continuous states / discrete actions part 1
+## Session 3 Continuous States and Discrete Actions
 * Some approaches to continuous states: discretization, tile coding, other encoding, linear approximations
 * Vanilla DQN: experience replay and target functions
 * Optimizing DQN: prioritized experience replay, DDQN, Dueling networks
 * Homework: work on an Atari game and detail the process of hyperparameter tuning
 
-## Session 3 continuous states / actions
+## Session 4 Continuous States and Actions
 * Policy gradient methods: a2c, a3c, ddpg, REINFORCE
 
-## Session 4 multi-agent learnig
+## Session 5 Multi-agent Learnig
 * Monte Carlo tree search
 
-## Other topics
+## Other Topics
 * Explore vs exploit: epsilon greedy, ucb, thompson sampling
 * Reward function setting
+* Hackathon nights to play Blackjack, Poker, Pommerman, boardgames and self-driving cars
 
 ## Readings
 * [Sutton and Barto](http://incompleteideas.net/book/the-book-2nd.html)
