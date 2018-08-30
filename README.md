@@ -6,23 +6,30 @@
 * A word of caution:
     * [Why is reinforcement learning flawed](https://thegradient.pub/why-rl-is-flawed/)
     * [Simple random search provides a competitive approach to reinforcement learning](https://arxiv.org/abs/1803.07055)
-* Windy Gridworld example (in code and physical activities with paper and dice) to explain:
-    * Problems: MDPs, states, actions, rewards, discount factors
-    * Solutions: policy, state values, (state-action) values, Bellman and optimality equations
-* Monte Carlo Prediction:
-    * Evaluate deterministic policies in a deterministic environment
-    * Evaluate deterministic policies in a stochastic environment
-    * Evaluate stochastic policies in a stochastic environment
+* (Windy) Gridworld example (in code and physical activities with paper and dice) to explain:
+    * Problems: Markov decision processes, states, actions, and rewards
+    * Solutions: policies, state values, (state-)action values, discount factor, optimality equations
+* Monte Carlo Prediction
 * Monte Carlo Control: all-visit, first-visit, GLIE, constant learning rate
-* Homework: what are some other ways to find optimal policy? (Hint: temporal difference)
+* Challenges:
+    * What are some other ways of solving reinforcement learning problems? How are they better or worse than Monte Carlo methods e.g. performance, data requirements, etc.?
+    * Play around with Gridworld. Tweak these variables and see what happens:
+        * Wing probability
+        * Move rewards
+        * Discount factor
+        * Epsilon and how to decay it (or not)
+    * Solve at least one of the following OpenAI gym environments with discrete states and actions:
+        * FrozenLake-v0
+        * Taxi-v2
+        * Blackjack-v0
 
 ## Session 2 Discrete States and Actions
-* OpenAI Gym toy environment to explain solutions: monte carlo, sarsa, q-learning, expected sarsa
+* OpenAI Gym toy environment to explain temporal difference learning: sarsa, q-learning, expected sarsa
 * Homework: solve an environment with discrete states and actions such as:
     * FrozenLake-v0
     * Taxi-v2
     * Blackjack-v0
-* Challenge: solve an environment with continuous states: discretization, tile codings, etc. such as
+* Challenges: solve an environment with continuous states: discretization, tile codings, etc. such as
     * Acrobat-v1
     * MountainCar-v0
     * CartPole-v0
@@ -43,13 +50,23 @@
 ## Session 3 Continuous States and Discrete Actions
 * Some approaches to continuous states: discretization, tile coding, other encoding, linear approximations
 * Vanilla DQN: experience replay and target functions
-* Optimizing DQN: prioritized experience replay, DDQN, Dueling networks
 * Homework: work on an Atari game and detail the process of hyperparameter tuning
 
-## Session 4 Continuous States and Actions
+## Session 4 Continuous States and Discrete Actions
+* Rainbow
+    * Vanilla DQN (experience replay + target network)
+    * Double DQN
+    * Prioritized experience replay
+    * Dueling networks
+    * Multi-step learning
+    * Distributional RL
+    * Noisy networks
+* Homework: Implement Rainbow and compare it to your last project
+
+## Session 5 Continuous States and Actions
 * Policy gradient methods: a2c, a3c, ddpg, REINFORCE
 
-## Session 5 Multi-agent Learnig
+## Session 6 Multi-agent Learnig
 * Monte Carlo tree search
 
 ## Other Topics
