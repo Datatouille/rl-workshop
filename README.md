@@ -1,6 +1,7 @@
 # Bangkok School of AI - Reinforcement Learning Workshop
 
-## Session 1 Discrete States and Actions
+## Session 1 Markov Decision Processes and Monte Carlo
+*Discrete States and Actions*
 * [Reinforcement learning versus other approaches](https://web.stanford.edu/class/cs234/slides/cs234_2018_l1.pdf)
 * Use cases for reinforcement learning e.g. games, robotics, ads biddings, stock trading, etc.
 * A word of caution:
@@ -23,7 +24,8 @@
         * Taxi-v2
         * Blackjack-v0
 
-## Session 2 Discrete States and Actions
+## Session 2 Temporal Difference Learning
+*Discrete States and Actions*
 * OpenAI Gym toy environment to explain temporal difference learning: sarsa, q-learning, expected sarsa
 * Homework: solve an environment with discrete states and actions such as:
     * FrozenLake-v0
@@ -47,12 +49,14 @@
 * Backpropagation
 * Why is deeper usually better? Spiral example
 
-## Session 3 Continuous States and Discrete Actions
+## Session 3 Deep Q-learning
+*Continuous States and Discrete Actions*
 * Some approaches to continuous states: discretization, tile coding, other encoding, linear approximations
 * Vanilla DQN: experience replay and target functions
 * Homework: work on an Atari game and detail the process of hyperparameter tuning
 
-## Session 4 Continuous States and Discrete Actions
+## Session 4 Rainbow
+*Continuous States and Discrete Actions*
 * Rainbow
     * Vanilla DQN (experience replay + target network)
     * Double DQN
@@ -63,7 +67,8 @@
     * Noisy networks
 * Homework: Implement Rainbow and compare it to your last project
 
-## Session 5 Continuous States and Actions
+## Session 5 Policy Gradients
+*Continuous States and Actions*
 * Policy gradient methods: a2c, a3c, ddpg, REINFORCE
 
 ## Session 6 Multi-agent Learnig
