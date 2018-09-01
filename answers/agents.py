@@ -50,7 +50,7 @@ class MCAgent:
         Write the code to make the agent perform 
         according to an epsilon-greedy policy.
         """
-        probs = np.ones(self.n_action) * (epsilon / self.n_action)
+        probs = np.ones(self.n_action) * (1 / self.n_action)
         action = np.random.choice(np.arange(self.n_action),p=probs)
         return(action)
     def print_policy(self):
