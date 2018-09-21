@@ -1,37 +1,47 @@
 # Bangkok School of AI - Reinforcement Learning Workshop
 
-## Session 1 Markov Decision Processes and Monte Carlo
+## How to Use Notebooks
+
+Each notebook contains the content and code-along of each session. We recommend that you run the notebooks from [Google Colaboratory](https://colab.research.google.com/) for minimal setup requirements. Edit the `Fill in The Code` section for coding assigments and check with our way of solving them in `solutions`.
+
+## Session 1 Markov Decision Processes
 *Discrete States and Actions*
-* [Reinforcement learning versus other approaches](https://web.stanford.edu/class/cs234/slides/cs234_2018_l1.pdf)
-* Use cases for reinforcement learning e.g. games, robotics, ads biddings, stock trading, etc.
-* A word of caution:
-    * [Why is reinforcement learning flawed](https://thegradient.pub/why-rl-is-flawed/)
-    * [Simple random search provides a competitive approach to reinforcement learning](https://arxiv.org/abs/1803.07055)
-* (Windy) Gridworld example (in code and physical activities with paper and dice) to explain:
+* What and Why of Reinforcement Learning
+    * Level of workflow automation in classes of machine learning algorithm
+    * A few reasons [Deep Reinforcement Learning Doesn't Work Yet](https://www.alexirpan.com/2018/02/14/rl-hard.html)
+    * Use cases for reinforcement learning e.g. games, robotics, ads biddings, stock trading, etc.
+* Reinforcement Learning Framework and Markov Decision Processes
+* (Windy) Gridworld example to explain:
     * Problems: Markov decision processes, states, actions, and rewards
     * Solutions: policies, state values, (state-)action values, discount factor, optimality equations
-* Monte Carlo Prediction
-* Monte Carlo Control: all-visit, first-visit, GLIE, constant learning rate
 * Take-home Challenges:
-    * Play around with Gridworld. Tweak these variables and see what happens:
+    * What are you ideas about how we can find the policy policy?
+    * Play around with Gridworld. Tweak these variables and see what happens to state and action values:
+        * Expand the grid and/or add some more traps
         * Wind probability
         * Move rewards
         * Discount factor
         * Epsilon and how to decay it (or not)
+
+## Session 2 Monte Carlo Methods
+*Discrete States and Actions*
+* Monte Carlo Prediction
+* Monte Carlo Control: all-visit, first-visit, GLIE, constant learning rate
+* Take-home Challenges:
     * Solve at least one of the following OpenAI gym environments with discrete states and actions:
         * FrozenLake-v0
         * Taxi-v2
         * Blackjack-v0
     * What are some other ways of solving reinforcement learning problems? How are they better or worse than Monte Carlo methods e.g. performance, data requirements, etc.?
 
-## Session 2 Temporal Difference Learning
+## Session 3 Temporal Difference Learning
 *Discrete States and Actions*
 * OpenAI Gym toy environment to explain temporal difference learning: sarsa, q-learning, expected sarsa
 * Homework: solve an environment with discrete states and actions such as:
     * FrozenLake-v0
     * Taxi-v2
     * Blackjack-v0
-* Challenges: solve an environment with continuous states: discretization, tile codings, etc. such as
+* Take-home Challenges: Solve an environment with continuous states: discretization, tile codings, etc. such as
     * Acrobat-v1
     * MountainCar-v0
     * CartPole-v0
@@ -41,7 +51,7 @@
     * What algorithms did you use to solve the environment and why?
     * How many episodes did you solve it in? Can you improve the performance? (Tweaking discount factor, learning rate, using Monte Carlo instead of TD)
     
-## Session 2.5 Neural Networks in Pytorch
+## Session 3.5 Neural Networks in Pytorch
 * Tensor operations
 * Feedforward 
 * Activation functions
@@ -49,13 +59,13 @@
 * Backpropagation
 * Why is deeper usually better? Spiral example
 
-## Session 3 Deep Q-learning
+## Session 4 Deep Q-learning
 *Continuous States and Discrete Actions*
 * Some approaches to continuous states: discretization, tile coding, other encoding, linear approximations
 * Vanilla DQN: experience replay and target functions
-* Homework: work on an Atari game and detail the process of hyperparameter tuning
+* Take-home Challenges: Work on an Atari game and detail the process of hyperparameter tuning
 
-## Session 4 Rainbow
+## Session 4.5 Rainbow
 *Continuous States and Discrete Actions*
 * Rainbow
     * Vanilla DQN (experience replay + target network)
@@ -65,7 +75,7 @@
     * Multi-step learning
     * Distributional RL
     * Noisy networks
-* Homework: Implement Rainbow and compare it to your last project
+* Take-home Challenges: Implement Rainbow and compare it to your last project
 
 ## Session 5 Policy Gradients
 *Continuous States and Actions*
