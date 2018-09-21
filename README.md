@@ -12,10 +12,9 @@
     * Solutions: policies, state values, (state-)action values, discount factor, optimality equations
 * Monte Carlo Prediction
 * Monte Carlo Control: all-visit, first-visit, GLIE, constant learning rate
-* Challenges:
-    * What are some other ways of solving reinforcement learning problems? How are they better or worse than Monte Carlo methods e.g. performance, data requirements, etc.?
+* Take-home Challenges:
     * Play around with Gridworld. Tweak these variables and see what happens:
-        * Wing probability
+        * Wind probability
         * Move rewards
         * Discount factor
         * Epsilon and how to decay it (or not)
@@ -23,6 +22,7 @@
         * FrozenLake-v0
         * Taxi-v2
         * Blackjack-v0
+    * What are some other ways of solving reinforcement learning problems? How are they better or worse than Monte Carlo methods e.g. performance, data requirements, etc.?
 
 ## Session 2 Temporal Difference Learning
 *Discrete States and Actions*
