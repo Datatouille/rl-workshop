@@ -1,6 +1,7 @@
 import numpy as np
 from collections import defaultdict
 import sys
+import random
 
 class MCAgent:
     def __init__(self, env, policy, gamma = 0.9, 
@@ -28,10 +29,16 @@ class MCAgent:
         q = np.sum([episode[i][2] * self.gamma**i for i in range(len(episode))])
         return(q)
     def select_action(self,state,epsilon):
-        probs = np.ones(self.n_action) * (epsilon / self.n_action)
+        #probs = np.ones(self.n_action) * (epsilon / self.n_action)
+        #best_action = self.policy[state]
+        #probs[best_action] = 1 - epsilon + (epsilon / self.n_action)
+        #action = np.random.choice(np.arange(self.n_action),p=probs)
+        
         best_action = self.policy[state]
-        probs[best_action] = 1 - epsilon + (epsilon / self.n_action)
-        action = np.random.choice(np.arange(self.n_action),p=probs)
+        if random.random() > epsilon:
+            action = best_action
+        else:
+             action = np.random.choice(np.arange(self.n_action))
         return(action)
     def print_policy(self):
         for i in range(self.env.sz[0]):

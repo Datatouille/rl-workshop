@@ -2,7 +2,7 @@ import numpy as np
 from collections import defaultdict
 
 class Gridworld:
-    def __init__(self, sz = (3,3), start = (0,0), goal = (0,2), traps = [(0,1)],
+    def __init__(self, sz = (3,3), start = (2,0), goal = (1,2), traps = [(1,1)],
                  goal_reward = 5, trap_reward = -5, move_reward = -1, wind_p = 0.):
         self.sz = sz
         self.action_text = np.array(['U','L','D','R'])
