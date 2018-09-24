@@ -4,17 +4,19 @@
 
 Each notebook contains the content and code-along of each session. We recommend that you run the notebooks from [Google Colaboratory](https://colab.research.google.com/) for minimal setup requirements. Edit the `Fill in The Code` section for coding assigments and check with our way of solving them in `solutions`.
 
-## Session 1 Markov Decision Processes
-*Discrete States and Actions*
-* What and Why of Reinforcement Learning
-    * Level of workflow automation in classes of machine learning algorithm
-    * A few reasons [Deep Reinforcement Learning Doesn't Work Yet](https://www.alexirpan.com/2018/02/14/rl-hard.html)
-    * Use cases for reinforcement learning e.g. games, robotics, ads biddings, stock trading, etc.
+## Session 1 Escaping GridWorld with Simple RL Agents
+*Markov Decision Processes / Discrete States and Actions*
+* What is Reinforcement Learning: Pavlov's kitties
+* How Useful is Reinforcement Learning: games, robotics, ads biddings, stock trading, etc.
+* Why is Reinforcement Learning Different: level of workflow automation in classes of machine learning algorithm
+    * Use cases for reinforcement learning 
 * Reinforcement Learning Framework and Markov Decision Processes
-* (Windy) Gridworld example to explain:
+* GridWorld example to explain:
     * Problems: Markov decision processes, states, actions, and rewards
     * Solutions: policies, state values, (state-)action values, discount factor, optimality equations
+* Words of Caution: a few reasons [Deep Reinforcement Learning Doesn't Work Yet](https://www.alexirpan.com/2018/02/14/rl-hard.html)
 * Take-home Challenges:
+    * Read up on Bellman's equations and find out where they hid in our workshop today.
     * What are you ideas about how we can find the policy policy?
     * Play around with Gridworld. Tweak these variables and see what happens to state and action values:
         * Expand the grid and/or add some more traps
@@ -94,12 +96,18 @@ Each notebook contains the content and code-along of each session. We recommend 
 * [Stanford CS234](https://web.stanford.edu/class/cs234/index.html)
 * [Udacity RL Nanodegree](https://github.com/udacity/deep-reinforcement-learning)
 * [David Silver Lectures](https://github.com/dalmia/David-Silver-Reinforcement-learning)
+* [UC Berley Lectures](http://rail.eecs.berkeley.edu/deeprlcourse/)
+* [Siraj's Move 37](https://www.theschool.ai/courses/move-37-course/)
 * [Denny Britz Repo](https://github.com/dennybritz/reinforcement-learning/)
 * [Intro to RL in Trading](http://www.wildml.com/2018/02/introduction-to-learning-to-trade-with-reinforcement-learning/)
+
 ## Environments
 * [OpenAI Gym](https://github.com/openai/gym)
+* [Unity ML-Agent Toolkit](https://github.com/Unity-Technologies/ml-agents)
 * [Pommerman](https://github.com/suphoff/pommerman)
 * [MetaCar](https://github.com/thibo73800/metacar)
 * [Boardgame.io](https://github.com/google/boardgame.io)
+
 ## Agents
+* [Unity ML-Agent Toolkit](https://github.com/Unity-Technologies/ml-agents)
 * [Dopamine](https://github.com/google/dopamine)
