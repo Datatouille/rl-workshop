@@ -15,7 +15,7 @@ Each notebook contains the content and code-along of each session. We recommend 
     * Problems: Markov decision processes, states, actions, and rewards
     * Solutions: policies, state values, (state-)action values, discount factor, optimality equations
 * Words of Caution: a few reasons [Deep Reinforcement Learning Doesn't Work Yet](https://www.alexirpan.com/2018/02/14/rl-hard.html)
-* Take-home Challenges:
+* Challenges:
     * Read up on Bellman's equations and find out where they hid in our workshop today.
     * What are you ideas about how we can find the policy policy?
     * Play around with Gridworld. Tweak these variables and see what happens to state and action values:
@@ -27,14 +27,19 @@ Each notebook contains the content and code-along of each session. We recommend 
 
 ## Session 2 Monte Carlo Methods
 *Discrete States and Actions*
+* Blackjack-v0 environment, human play and computer play
+* Optimal Strategy for Blackjack
+* What is Monte Carlo Method
 * Monte Carlo Prediction
-* Monte Carlo Control: all-visit, first-visit, GLIE, constant learning rate
-* Take-home Challenges:
+* Monte Carlo Control: All-visit, First-visit, and GLIE
+* Challanges:
+    * What are some other ways of solving reinforcement learning problems? How are they better or worse than Monte Carlo methods e.g. performance, data requirements, etc.?
     * Solve at least one of the following OpenAI gym environments with discrete states and actions:
         * FrozenLake-v0
         * Taxi-v2
         * Blackjack-v0
-    * What are some other ways of solving reinforcement learning problems? How are they better or worse than Monte Carlo methods e.g. performance, data requirements, etc.?
+        * Any other environments with discrete states and actions at [OpenAI Gym](https://github.com/openai/gym/wiki/Table-of-environments)
+    * Check `session2b.ipynb` if you are interested in using Monte Carlo method to solve Grid World. This will give you more insight into difference between all-visit and first-visit Monte Carlo.
 
 ## Session 3 Temporal Difference Learning
 *Discrete States and Actions*

@@ -95,4 +95,4 @@ class Gridworld:
             pass
         if (self.i,self.j) == self.goal: self.done = True
         #return s',r, done or not
-        return((self.i,self.j),reward,self.done)
+        return((self.i,self.j),reward,self.done,'info')

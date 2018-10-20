@@ -2,8 +2,9 @@ import numpy as np
 from collections import defaultdict
 import sys
 import random
+from tqdm import trange
 
-class MCAgent:
+class GridworldAgent:
     def __init__(self, env, policy, gamma = 0.9, 
                  start_epsilon = 0.9, end_epsilon = 0.1, epsilon_decay = 0.9):
         self.env = env
@@ -59,13 +60,13 @@ class MCAgent:
         #dictate first action to iterate q
         if first_action is not None:
             action = first_action
-            next_state,reward,done = self.env.step(action)
+            next_state,reward,done,info = self.env.step(action)
             result.append((state,action,reward,next_state,done))
             state = next_state
             if done: return(result)
         while True:
             action = self.select_action(state,epsilon)
-            next_state,reward,done = self.env.step(action)
+            next_state,reward,done,info = self.env.step(action)
             result.append((state,action,reward,next_state,done))
             state = next_state
             if done: break
@@ -136,3 +137,107 @@ class MCAgent:
                         a = (1/self.n_q[states[i]][actions[i]])
                     self.q[states[i]][actions[i]]+= a*(g - self.q[states[i]][actions[i]])
                     self.update_policy_q()
+                    
+class BJAgent:
+    def __init__(self, env, gamma = 1.0, 
+                 start_epsilon = 1.0, end_epsilon = 0.05, epsilon_decay = 0.99999):
+        
+        self.env = env
+        self.n_action = self.env.action_space.n
+        self.policy = defaultdict(lambda: 0) #always stay as best policy
+        self.v = defaultdict(lambda:0) #state value initiated as 0
+        self.gamma = gamma
+        
+        #action values
+        self.q = defaultdict(lambda: np.zeros(self.n_action)) #action value
+        self.g = defaultdict(lambda: np.zeros(self.n_action)) #sum of expected rewards
+        self.n_q = defaultdict(lambda: np.zeros(self.n_action)) #number of actions performed
+        
+        #epsilon greedy parameters
+        self.start_epsilon = start_epsilon
+        self.end_epsilon = end_epsilon
+        self.epsilon_decay = epsilon_decay
+    
+    #get epsilon
+    def get_epsilon(self,n_episode):
+        epsilon = max(self.start_epsilon * (self.epsilon_decay ** n_episode), self.end_epsilon)
+        return(epsilon)
+    
+    #select action based on epsilon greedy
+    def select_action(self,state,epsilon):
+        best_action = np.argmax(self.policy[state]) if state in self.q else self.env.action_space.sample()
+        if random.random() > epsilon:
+            action = best_action
+        else:
+             action = self.env.action_space.sample()
+        return(action)
+    
+    #run episode with current policy
+    def run_episode(self, epsilon):
+        result = []
+        state = self.env.reset()
+        while True:
+            action = self.select_action(state,epsilon)
+            next_state,reward,done,info = self.env.step(action)
+            result.append((state,action,reward,next_state,done))
+            state = next_state
+            if done: break
+        return(result)
+    
+    #update policy to reflect q values
+    def update_policy_q(self):
+        for state, value in self.q.items():
+            self.policy[state] = np.argmax(value)
+        
+    #mc control
+    def mc_control_q(self,n_episode=500000,first_visit=True,update_every=1):
+        for t in trange(n_episode):
+            traversed = []
+            e = self.get_epsilon(t)
+            transitions = self.run_episode(e)
+            states,actions,rewards,next_states,dones = zip(*transitions)
+            #mc prediction
+            for i in range(len(transitions)):
+                discounts = np.array([self.gamma**j for j in range(len(transitions)+1)])
+                if first_visit and ((states[i],actions[i]) not in traversed):
+                    traversed.append((states[i],actions[i]))
+                    self.n_q[states[i]][actions[i]]+=1
+                    self.g[states[i]][actions[i]]+= sum(rewards[i:]*discounts[:-(1+i)])
+                    self.q[states[i]][actions[i]] = self.g[states[i]][actions[i]] / self.n_q[states[i]][actions[i]]
+                else:
+                    self.n_q[states[i]][actions[i]]+=1
+                    self.g[states[i]][actions[i]]+= sum(rewards[i:]*discounts[:-(1+i)])
+                    self.q[states[i]][actions[i]] = self.g[states[i]][actions[i]] / self.n_q[states[i]][actions[i]]
+            #update policy every few episodes seem to be more stable
+            if t % int(update_every * n_episode - 1) ==0:
+                self.update_policy_q()
+        #final policy update at the end
+        self.update_policy_q()
+    
+    #mc control glie
+    def mc_control_glie(self,n_episode=500000,lr=0.,update_every=1):
+        for t in trange(n_episode):
+            traversed = []
+            e = self.get_epsilon(t)
+            transitions = self.run_episode(e)
+            states,actions,rewards,next_states,dones = zip(*transitions)
+            
+            #mc prediction
+            for i in range(len(transitions)):
+                discounts = np.array([self.gamma**j for j in range(len(transitions)+1)])
+                traversed.append((states[i],actions[i]))
+                self.n_q[states[i]][actions[i]]+=1
+                g = sum(rewards[i:]*discounts[:-(1+i)])
+                alpha = lr if lr > 0 else (1/self.n_q[states[i]][actions[i]])
+                self.q[states[i]][actions[i]]+= alpha * (g - self.q[states[i]][actions[i]])
+       
+            #update policy every few episodes seem to be more stable
+            if t % int(update_every * n_episode - 1)==0:
+                self.update_policy_q()
+        #final policy update at the end
+        self.update_policy_q()
+        
+    #get state value from action value
+    def q_to_v(self):
+        for state, value in self.q.items():
+            self.v[state] = np.max(value)
