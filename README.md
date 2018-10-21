@@ -107,12 +107,16 @@ Each notebook contains the content and code-along of each session. We recommend 
 * [Intro to RL in Trading](http://www.wildml.com/2018/02/introduction-to-learning-to-trade-with-reinforcement-learning/)
 
 ## Environments
-* [OpenAI Gym](https://github.com/openai/gym)
-* [Unity ML-Agent Toolkit](https://github.com/Unity-Technologies/ml-agents)
-* [Pommerman](https://github.com/suphoff/pommerman)
-* [MetaCar](https://github.com/thibo73800/metacar)
-* [Boardgame.io](https://github.com/google/boardgame.io)
+* [OpenAI Gym](https://github.com/openai/gym) - a toolkit for developing and comparing reinforcement learning algorithms
+* [Unity ML-Agent Toolkit](https://github.com/Unity-Technologies/ml-agents) - an open-source Unity plugin that enables games and simulations to serve as environments for training intelligent agents
+* [Holodeck](https://github.com/byu-pccl/holodeck) - a high-fidelity simulator for reinforcement learning built on top of Unreal Engine 4
+* [AirSim](https://github.com/Microsoft/AirSim) - a simulator for drones, cars and more, built on Unreal Engine
+* [Carla](https://github.com/carla-simulator/carla) - an open-source simulator for autonomous driving research
+* [Pommerman](https://github.com/suphoff/pommerman) - a clone of Bomberman built for AI research
+* [MetaCar](https://github.com/thibo73800/metacar) - a reinforcement learning environment for self-driving cars in the browser
+* [Boardgame.io](https://github.com/google/boardgame.io) - a boardgame environment
 
 ## Agents
-* [Unity ML-Agent Toolkit](https://github.com/Unity-Technologies/ml-agents)
-* [Dopamine](https://github.com/google/dopamine)
+* [Unity ML-Agent Toolkit](https://github.com/Unity-Technologies/ml-agents) - an open-source Unity plugin that enables games and simulations to serve as environments for training intelligent agents
+* [SLM Labs](https://github.com/kengz/SLM-Lab) - a modular deep reinforcement learning framework in PyTorch
+* [Dopamine](https://github.com/google/dopamine) - a research framework for fast prototyping of reinforcement learning algorithms
