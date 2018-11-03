@@ -25,7 +25,7 @@ Each notebook contains the content and code-along of each session. We recommend 
         * Discount factor
         * Epsilon and how to decay it (or not)
 
-## Session 2 Monte Carlo Methods
+## Session 2 Win Big at Monte Carlo - Sponsored by Humanize, the company that helps your business grow with AI
 *Discrete States and Actions*
 * Blackjack-v0 environment, human play and computer play
 * Optimal Strategy for Blackjack
@@ -41,22 +41,24 @@ Each notebook contains the content and code-along of each session. We recommend 
         * Any other environments with discrete states and actions at [OpenAI Gym](https://github.com/openai/gym/wiki/Table-of-environments)
     * Check `session2b.ipynb` if you are interested in using Monte Carlo method to solve Grid World. This will give you more insight into difference between all-visit and first-visit Monte Carlo.
 
-## Session 3 Temporal Difference Learning
+## Session 3 GET a Taxi with Temporal Difference Learning - Sponsored by GET, the new ride-hailing service in Thailand
 *Discrete States and Actions*
-* OpenAI Gym toy environment to explain temporal difference learning: sarsa, q-learning, expected sarsa
-* Homework: solve an environment with discrete states and actions such as:
-    * FrozenLake-v0
-    * Taxi-v2
-    * Blackjack-v0
-* Take-home Challenges: Solve an environment with continuous states: discretization, tile codings, etc. such as
+* Taxi-v2 environment
+* Comparison between Monte Carlo and TD
+* SARSA
+* Q-learning
+* Expected SARSA
+* Handling Continuous States
+* Challenges: Solve an environment with continuous states using discretization
     * Acrobat-v1
     * MountainCar-v0
     * CartPole-v0
     * LunarLander-v2
 * Points to consider:
+    * What are other ways of handling continuous states? (See tile coding)
     * What are the state space, action space, and rewards of the environment?
     * What algorithms did you use to solve the environment and why?
-    * How many episodes did you solve it in? Can you improve the performance? (Tweaking discount factor, learning rate, using Monte Carlo instead of TD)
+    * How many episodes did you solve it in? Can you improve the performance? (Tweaking discount factor, learning rate, Monte Carlo vs TD)
     
 ## Session 3.5 Neural Networks in Pytorch
 * Tensor operations
@@ -120,3 +122,5 @@ Each notebook contains the content and code-along of each session. We recommend 
 * [Unity ML-Agent Toolkit](https://github.com/Unity-Technologies/ml-agents) - an open-source Unity plugin that enables games and simulations to serve as environments for training intelligent agents
 * [SLM Labs](https://github.com/kengz/SLM-Lab) - a modular deep reinforcement learning framework in PyTorch
 * [Dopamine](https://github.com/google/dopamine) - a research framework for fast prototyping of reinforcement learning algorithms
+* [TRF](https://github.com/deepmind/trfl/) - a library built on top of TensorFlow that exposes several useful building blocks for implementing Reinforcement Learning agent
+* [Horizon](https://github.com/facebookresearch/Horizon) - an open source end-to-end platform for applied reinforcement learning (RL) developed and used at Facebook. 
