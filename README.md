@@ -60,13 +60,19 @@ Each notebook contains the content and code-along of each session. We recommend 
     * What algorithms did you use to solve the environment and why?
     * How many episodes did you solve it in? Can you improve the performance? (Tweaking discount factor, learning rate, Monte Carlo vs TD)
     
-## Session 3.5 Neural Networks in Pytorch
-* Tensor operations
-* Feedforward 
-* Activation functions
-* Losses
-* Backpropagation
-* Why is deeper usually better? Spiral example
+## Session 3b Neural Networks in Pytorch
+*Optional*
+1. **Building Blocks** 
+
+Familiarize ourselves with basic building blocks of a neural network in PyTorch such as tensors and layers
+
+2. **Your First Neural Network**
+
+Build your first neural network with the main components of architecture, loss and optimizer
+
+3. **Spiral Example** 
+
+Use your first neural network in a task challenging for linear models to understand why we even need deep learning
 
 ## Session 4 Deep Q-learning
 *Continuous States and Discrete Actions*
