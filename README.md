@@ -109,6 +109,7 @@ Each notebook contains the content and code-along of each session. We recommend 
 * [Intro to RL in Trading](http://www.wildml.com/2018/02/introduction-to-learning-to-trade-with-reinforcement-learning/)
 
 ## Environments
+* [Spinning Up](https://github.com/openai/spinningup) - an educational resource produced by OpenAI that makes it easier to learn about deep reinforcement learning (deep RL)
 * [OpenAI Gym](https://github.com/openai/gym) - a toolkit for developing and comparing reinforcement learning algorithms
 * [Unity ML-Agent Toolkit](https://github.com/Unity-Technologies/ml-agents) - an open-source Unity plugin that enables games and simulations to serve as environments for training intelligent agents
 * [Holodeck](https://github.com/byu-pccl/holodeck) - a high-fidelity simulator for reinforcement learning built on top of Unreal Engine 4
