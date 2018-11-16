@@ -60,7 +60,7 @@ Each notebook contains the content and code-along of each session. We recommend 
     * What algorithms did you use to solve the environment and why?
     * How many episodes did you solve it in? Can you improve the performance? (Tweaking discount factor, learning rate, Monte Carlo vs TD)
     
-## Session 3b Neural Networks in Pytorch
+## Session 3b Neural Networks in Pytorch - Sponsored by GET, the new ride-hailing service in Thailand
 *Optional*
 1. **Building Blocks** 
 
