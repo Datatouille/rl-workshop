@@ -74,13 +74,23 @@ Build your first neural network with the main components of architecture, loss a
 
 Use your first neural network in a task challenging for linear models to understand why we even need deep learning
 
-## Session 4 Deep Q-learning
+## Session 4 Policy-gradient Pong
+*Continuous States and Discrete Actions*
+* Replacing Q dictionaries with neural networks
+* Pong-v0 environment
+* Monte Carlo policy gradient aka REINFORCE
+* Proximal Policy Optimization (PPO)
+* Challenges: 
+   * Train your own PPO agent to play Pong-v0
+   * Try better policy network such as incorporating `nn.Conv2d`
+
+## Session 5 Deep Q-learning
 *Continuous States and Discrete Actions*
 * Some approaches to continuous states: discretization, tile coding, other encoding, linear approximations
 * Vanilla DQN: experience replay and target functions
 * Take-home Challenges: Work on an Atari game and detail the process of hyperparameter tuning
 
-## Session 4.5 Rainbow
+## Session 5.5 Rainbow
 *Continuous States and Discrete Actions*
 * Rainbow
     * Vanilla DQN (experience replay + target network)
@@ -91,10 +101,6 @@ Use your first neural network in a task challenging for linear models to underst
     * Distributional RL
     * Noisy networks
 * Take-home Challenges: Implement Rainbow and compare it to your last project
-
-## Session 5 Policy Gradients
-*Continuous States and Actions*
-* Policy gradient methods: a2c, a3c, ddpg, REINFORCE
 
 ## Session 6 Multi-agent Learnig
 * Monte Carlo tree search
