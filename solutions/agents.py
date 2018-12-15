@@ -1,8 +1,19 @@
+#misc
 import numpy as np
 from collections import defaultdict
 import sys
 import random
 from tqdm import trange
+
+#torch
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch import optim
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+#network
+from solutions.networks import *
 
 class GridworldAgent:
     def __init__(self, env, policy, gamma = 0.9, 
@@ -301,3 +312,112 @@ class TaxiAgent:
         new_q = reward + self.gamma * (random_q+best_q)
         #calculate update equation
         self.q[state][action] = self.q[state][action] + (self.alpha * (new_q - self.q[state][action]))
+
+class DQNAgent:
+    def __init__(self, state_size = 2, action_size = 3, replay_memory = None, seed = 1412,
+        lr = 1e-3 / 4, bs = 64, nb_hidden = 256, clip = 1.,
+        gamma=0.99, tau= 1e-3, update_interval = 5, update_times = 1, tpe = 200):
+        
+        self.state_size = state_size
+        self.action_size = action_size
+        self.seed = random.seed(seed)
+        self.npseed = np.random.seed(seed)
+        self.lr = lr
+        self.bs = bs
+        self.gamma = gamma
+        self.update_interval = update_interval
+        self.update_times = update_times
+        self.tau = tau
+        self.losses = []
+        self.tpe = tpe
+        self.clip = clip
+
+        #vanilla
+        self.network_local = QNetwork(state_size, action_size, nb_hidden).to(device)
+        self.network_target = QNetwork(state_size, action_size, nb_hidden).to(device)
+        
+        #dueling
+#         self.network_local = DuelingNetwork(state_size, action_size, nb_hidden).to(device)
+#         self.network_target = DuelingNetwork(state_size, action_size, nb_hidden).to(device)
+        
+        #optimizer
+        self.optimizer = optim.Adam(self.network_local.parameters(), lr=self.lr)
+
+        # replay memory
+        self.memory = replay_memory
+        # count time steps
+        self.t_step = 0
+        
+    def get_eps(self, i, eps_start = 1., eps_end = 0.001, eps_decay = 0.9):
+        eps = max(eps_start * (eps_decay ** i), eps_end)
+        return(eps)
+    
+    def step(self, state, action, reward, next_state, done):
+        #add transition to replay memory
+        self.memory.add(state, action, reward, next_state, done)
+        
+        #update target network
+        self.soft_update(self.network_local, self.network_target, self.tau)
+#         self.hard_update(self.network_local, self.network_target, 1/self.tau)
+        
+        # learn every self.t_step
+        self.t_step += 1
+        if self.t_step % self.update_interval == 0:
+            if len(self.memory) > self.bs:
+                #vanilla
+                for _ in range(self.update_times):
+                    transitions = self.memory.sample(self.bs)
+                    self.learn(transitions)
+
+    def act(self, state):
+        eps = self.get_eps(int(self.t_step / self.tpe))
+        state = torch.from_numpy(state).float().unsqueeze(0).to(device)
+        self.network_local.eval()
+        with torch.no_grad():
+            action_values = self.network_local(state)
+        self.network_local.train()
+
+        #epsilon greedy
+        if random.random() > eps:
+            return np.argmax(action_values.to(device).data.numpy())
+        else:
+            return random.choice(np.arange(self.action_size))
+        
+    def vanilla_loss(self,q_targets,q_expected):
+        loss = F.mse_loss(q_expected,q_targets)
+        return(loss)
+        
+    def learn(self, transitions, small_e = 1e-5):
+        #vanilla
+        states, actions, rewards, next_states, dones = transitions
+
+        #vanilla
+        #         q_targets_next = self.network_target(next_states).detach().max(1)[0].unsqueeze(1)
+        #double
+        max_actions_next = self.network_local(next_states).detach().max(1)[1].unsqueeze(1)
+        q_targets_next = self.network_target(next_states).detach().gather(1, max_actions_next.long())
+
+        #compute loss
+        q_targets = rewards + (self.gamma * q_targets_next) * (1 - dones)
+        q_expected = self.network_local(states).gather(1, actions.long())
+        #vanilla
+        loss = self.vanilla_loss(q_expected, q_targets)
+        #append for reporting
+        self.losses.append(loss)
+        
+        #backprop
+        self.optimizer.zero_grad()
+        loss.backward()
+        if self.clip: torch.nn.utils.clip_grad_norm(self.network_local.parameters(), self.clip)
+        self.optimizer.step()
+      
+    def hard_update(self, local_model, target_model, target_interval=1e2):
+        if self.t_step % target_interval==0:
+            target_model.load_state_dict(local_model.state_dict())
+            
+    def soft_update(self, local_model, target_model, tau):
+        """Soft update model parameters.
+        θ_target = τ*θ_local + (1 - τ)*θ_target
+        """
+        for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
+            target_param.data.copy_(tau*local_param.data + (1.0-tau)*target_param.data)

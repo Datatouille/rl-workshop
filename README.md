@@ -74,21 +74,32 @@ Build your first neural network with the main components of architecture, loss a
 
 Use your first neural network in a task challenging for linear models to understand why we even need deep learning
 
-## Session 4 Policy-gradient Pong
+## Session 4 Policy-gradient Pong - Sponsored by GET, the new ride-hailing service in Thailand
 *Continuous States and Discrete Actions*
 * Replacing Q dictionaries with neural networks
 * Pong-v0 environment
-* Monte Carlo policy gradient aka REINFORCE
+* Monte Carlo Policy Gradient aka Vanilla Policy Gradient aka REINFORCE aka Stochastic Policy Gradient
 * Proximal Policy Optimization (PPO)
 * Challenges: 
    * Train your own PPO agent to play Pong-v0
    * Try better policy network such as incorporating `nn.Conv2d`
 
-## Session 5 Deep Q-learning
+## Session 5 Deep Deep Q-learning to Drive MountainCar - Sponsored by GET, the new ride-hailing service in Thailand
 *Continuous States and Discrete Actions*
-* Some approaches to continuous states: discretization, tile coding, other encoding, linear approximations
-* Vanilla DQN: experience replay and target functions
-* Take-home Challenges: Work on an Atari game and detail the process of hyperparameter tuning
+* MountainCar-v0 environment
+* Deep Q-learning (DQN)
+* Train Your Own DQN Agent:
+    * Hyperparameter tuning
+    * Reward engineering
+* Inside DQN Agent:
+    * Replay Memory
+    * Q Networks
+    * Agent action selection
+    * Agent update: DQN and DDQN
+* Challenges:
+    * Finetune the model and try to beat [OpenAI Leaderboard](https://github.com/openai/gym/wiki/Leaderboard) at 341 episodes. Use what you learn from this session such as creative reward engineering and other hyperparameter tunings.
+    * Try to figure out how you can solve `MountainCarContinuous-v0`. It is almost exactly the same as `MountainCar-v0` but with continuous action space of size 1. See [NAF Q-learning](https://arxiv.org/abs/1603.00748) and [DDPG](https://arxiv.org/abs/1509.02971) papers for some hints.
+    * Read up on [Rainbow](https://arxiv.org/pdf/1710.02298.pdf) and how to push DQN to its limits.
 
 ## Session 5.5 Rainbow
 *Continuous States and Discrete Actions*
@@ -102,12 +113,21 @@ Use your first neural network in a task challenging for linear models to underst
     * Noisy networks
 * Take-home Challenges: Implement Rainbow and compare it to your last project
 
-## Session 6 Multi-agent Learnig
-* Monte Carlo tree search
+## Session 6 Actor-Critic Methods
+* Policy-based vs value-based deep reinforcement learning
+* Vanilla Actor-Critic
+* DDPG
+
+## Session 6.5 Advanced Actor-Critic Methods
+* A2C
+* A3C
+* SAC
+
 
 ## Other Topics
 * Explore vs exploit: epsilon greedy, ucb, thompson sampling
 * Reward function setting
+* Monte Carlo Tree Search
 * Hackathon nights to play Blackjack, Poker, Pommerman, boardgames and self-driving cars
 
 ## Readings
