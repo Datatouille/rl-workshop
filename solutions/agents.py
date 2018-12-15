@@ -379,7 +379,7 @@ class DQNAgent:
 
         #epsilon greedy
         if random.random() > eps:
-            return np.argmax(action_values.to(device).data.numpy())
+            return np.argmax(action_values.cpu().data.numpy())
         else:
             return random.choice(np.arange(self.action_size))
         
