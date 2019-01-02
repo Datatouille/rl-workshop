@@ -12,8 +12,9 @@ import torch.nn.functional as F
 from torch import optim
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-#network
+#network and utility
 from solutions.networks import *
+from solutions.utils import *
 
 class GridworldAgent:
     def __init__(self, env, policy, gamma = 0.9, 
@@ -357,8 +358,8 @@ class DQNAgent:
         self.memory.add(state, action, reward, next_state, done)
         
         #update target network
-        self.soft_update(self.network_local, self.network_target, self.tau)
-#         self.hard_update(self.network_local, self.network_target, 1/self.tau)
+        self.soft_update(self.network_local, self.network_target)
+#         self.hard_update(self.network_local, self.network_target)
         
         # learn every self.t_step
         self.t_step += 1
@@ -411,13 +412,127 @@ class DQNAgent:
         if self.clip: torch.nn.utils.clip_grad_norm(self.network_local.parameters(), self.clip)
         self.optimizer.step()
       
-    def hard_update(self, local_model, target_model, target_interval=1e2):
-        if self.t_step % target_interval==0:
+    def hard_update(self, local_model, target_model):
+        if self.t_step % 1/self.tau==0:
             target_model.load_state_dict(local_model.state_dict())
             
-    def soft_update(self, local_model, target_model, tau):
+    def soft_update(self, local_model, target_model):
         """Soft update model parameters.
         θ_target = τ*θ_local + (1 - τ)*θ_target
         """
         for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
-            target_param.data.copy_(tau*local_param.data + (1.0-tau)*target_param.data)
+            target_param.data.copy_(self.tau*local_param.data + (1.0-self.tau)*target_param.data)
+
+class DDPGAgent():        
+    def __init__(self, 
+        state_size, action_size, nb_hidden, replay_memory, action_bounds = [-2,2], random_seed=0, 
+        bs = 128, gamma=0.99, tau=1e-3, lr_actor=1e-4, lr_critic=1e-4, wd_actor=0, wd_critic=0,
+        clip_actor = None, clip_critic=None, update_interval = 20, update_times = 10): 
+
+        self.state_size = state_size
+        self.action_size = action_size
+        self.action_lower = action_bounds[0]
+        self.action_upper = action_bounds[1]
+        self.seed = random.seed(random_seed)
+        self.bs = bs
+        self.update_interval = update_interval
+        self.update_times = update_times
+        self.timestep = 0
+
+        self.gamma = gamma
+        self.tau = tau
+        self.lr_actor = lr_actor
+        self.lr_critic = lr_critic
+        self.wd_critic = wd_critic
+        self.wd_actor = wd_actor
+        self.clip_critic=clip_critic
+        self.clip_actor = clip_actor
+        self.actor_losses = []
+        self.critic_losses = []
+
+        #actor
+        self.actor_local = ActorNetwork(state_size, action_size, nb_hidden, random_seed).to(device)
+        self.actor_target = ActorNetwork(state_size, action_size, nb_hidden, random_seed).to(device)
+        self.actor_optimizer = optim.Adam(self.actor_local.parameters(), lr=self.lr_actor,weight_decay=self.wd_actor)
+
+        #critic
+        self.critic_local = CriticNetwork(state_size, action_size, nb_hidden, random_seed).to(device)
+        self.critic_target = CriticNetwork(state_size, action_size, nb_hidden, random_seed).to(device)
+        self.critic_optimizer = optim.Adam(self.critic_local.parameters(), lr=self.lr_critic,weight_decay=self.wd_critic)
+
+        #noise
+        self.noise = OUNoise(action_size, random_seed)
+
+        #replay memory
+        self.memory = replay_memory
+    
+    def step(self, state, action, reward, next_state, done):
+        #increment timestep
+        self.timestep+=1
+        self.memory.add(state, action, reward, next_state, done)
+
+        # Learn, if enough samples are available in memory  
+        if self.timestep % self.update_interval == 0:
+            for i in range(self.update_times):
+                if len(self.memory) > self.bs:
+                    transitions = self.memory.sample(self.bs)
+                    self.learn(transitions)
+
+    def act(self, state, add_noise=True):
+        state = torch.from_numpy(state).float().to(device)
+        self.actor_local.eval()
+        with torch.no_grad():
+            action = self.actor_local(state).cpu().data.numpy()
+        self.actor_local.train()        
+        if add_noise:
+            action += self.noise.sample()
+        return np.clip(action, self.action_lower, self.action_upper)
+
+    def reset_noise(self):
+        self.noise.reset()
+
+    def learn(self, transitions):
+        states, actions, rewards, next_states, dones = transitions
+
+        # ---------------------------- update critic ---------------------------- #
+        # Get predicted next-state actions and Q values from target models
+        actions_next = self.actor_target(next_states)
+        Q_targets_next = self.critic_target(next_states, actions_next)
+        # Compute Q targets for current states (y_i)
+        Q_targets = rewards + (self.gamma * Q_targets_next * (1 - dones))
+        # Compute critic loss
+        Q_expected = self.critic_local(states, actions)
+        critic_loss = F.mse_loss(Q_expected, Q_targets)
+        # Minimize the loss
+        self.critic_optimizer.zero_grad()
+        critic_loss.backward()
+        if self.clip_critic: torch.nn.utils.clip_grad_norm(self.critic_local.parameters(), self.clip_critic)
+        self.critic_optimizer.step()
+
+        # ---------------------------- update actor ---------------------------- #
+        # Compute actor loss
+        actions_pred = self.actor_local(states)
+        actor_loss = -self.critic_local(states, actions_pred).mean()
+        # Minimize the loss
+        self.actor_optimizer.zero_grad()
+        actor_loss.backward()
+        if self.clip_actor: torch.nn.utils.clip_grad_norm(self.actor_local.parameters(), self.clip_actor)
+        self.actor_optimizer.step()
+
+        # ----------------------- update target networks ----------------------- #
+        self.soft_update(self.critic_local, self.critic_target)
+        self.soft_update(self.actor_local, self.actor_target)   
+           
+        self.actor_losses.append(actor_loss.cpu().data.numpy())
+        self.critic_losses.append(critic_loss.cpu().data.numpy())        
+
+    def soft_update(self, local_model, target_model):
+        """Soft update model parameters.
+        θ_target = τ*θ_local + (1 - τ)*θ_target
+        """
+        for target_param, local_param in zip(target_model.parameters(), local_model.parameters()):
+            target_param.data.copy_(self.tau*local_param.data + (1.0-self.tau)*target_param.data)
+
+    def hard_update(self, local_model, target_model):
+        if self.t_step % 1/self.tau==0:
+            target_model.load_state_dict(local_model.state_dict())

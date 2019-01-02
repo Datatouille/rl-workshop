@@ -4,6 +4,35 @@ import torch.nn.functional as F
 from torch import optim
 from torch.autograd.variable import Variable
 
+class ActorNetwork(nn.Module):
+    def __init__(self, state_size, action_size, hidden_size, seed=1412):
+        super(ActorNetwork, self).__init__()
+        self.seed = torch.manual_seed(seed)
+        self.fc1 = nn.Linear(state_size, hidden_size)
+        self.fc2 = nn.Linear(hidden_size, hidden_size)
+        self.head = nn.Linear(hidden_size, action_size)
+        
+    def forward(self, state):
+        x = F.relu(self.fc1(state))
+        x = F.relu(self.fc2(x))
+        x = self.head(x)
+        return(2*torch.tanh(x))
+
+class CriticNetwork(nn.Module):
+    def __init__(self, state_size, action_size, hidden_size, seed=1412):
+        super(CriticNetwork, self).__init__()
+        self.seed = torch.manual_seed(seed)
+        self.fc1 = nn.Linear(state_size+action_size, hidden_size)
+        self.fc2 = nn.Linear(hidden_size, hidden_size)
+        self.head = nn.Linear(hidden_size, 1)
+        
+    def forward(self, state, action):
+        x = torch.cat([state, action], 1)
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.head(x)
+        return(x)
+
 class QNetwork(nn.Module):
     def __init__(self, state_size, action_size, nb_hidden, seed=1412):
         super(QNetwork, self).__init__()
@@ -11,12 +40,8 @@ class QNetwork(nn.Module):
         self.model = nn.Sequential(
             nn.Linear(state_size, nb_hidden),
             nn.ReLU(),
-#             nn.BatchNorm1d(nb_hidden),
-#             nn.Dropout(0.5)
             nn.Linear(nb_hidden, nb_hidden),
             nn.ReLU(),
-#             nn.BatchNorm1d(nb_hidden),
-#             nn.Dropout(0.5),
             nn.Linear(nb_hidden, action_size)
         )
     def forward(self, state):
@@ -149,3 +174,4 @@ class NoisyDuelingNetwork(nn.Module):
         self._modules['advantage'][2].reset_noise()
         self._modules['value'][0].reset_noise()
         self._modules['value'][2].reset_noise()
+        
