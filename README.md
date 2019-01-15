@@ -74,15 +74,33 @@ Build your first neural network with the main components of architecture, loss a
 
 Use your first neural network in a task challenging for linear models to understand why we even need deep learning
 
-## Session 4 Policy-gradient Pong - Sponsored by GET, the new ride-hailing service in Thailand
+## Session 4 Policy-gradient to The Moon - Sponsored by GET, the new ride-hailing service in Thailand
 *Continuous States and Discrete Actions*
 * Replacing Q dictionaries with neural networks
-* Pong-v0 environment
-* Monte Carlo Policy Gradient aka Vanilla Policy Gradient aka REINFORCE aka Stochastic Policy Gradient
-* Proximal Policy Optimization (PPO)
-* Challenges: 
-   * Train your own PPO agent to play Pong-v0
-   * Try better policy network such as incorporating `nn.Conv2d`
+* LunarLander-v2 environment
+* Vanilla Policy Gradient aka Monte Carlo Policy Gradient aka REINFORCE aka Stochastic Policy Gradient
+* Train Your Own Vanilla Policy Gradient Agent:
+    * Hyperparameter tuning
+    * Reward engineering
+* Inside Policy Gradient Agent:
+    * Policy network
+    * Returns function
+    * Trajectories
+    * Gradient ascent
+* Bonus: How to Derive Gradients of Policy Network
+* Challenges:
+    * Finetune the model and try to beat [OpenAI Leaderboard](https://github.com/openai/gym/wiki/Leaderboard) at 658 episodes. Pay attention on how you can improve on vanilla policy gradients such as [reward shaping](https://arxiv.org/abs/1506.02438).
+    * See if you can solve `LunarLanderContinuous-v2` with **continuous actions** using more sophisticated policy gradient methods such as [TRPO](https://arxiv.org/abs/1502.05477) and [PPO](https://arxiv.org/abs/1707.06347).
+    
+## Session 4.5 Moon Redux with Proximal Policy Optimization (PPO)
+*Continuous States and Continuous Actions*
+* PPO
+    * Parallel environments
+    * Normalized rewards and actions
+    * Future rewards
+    * GAE rewards
+    * Clipped surrogate function
+* Challenges: Implement PPO to solve `LunarLanderContinuous-v2` and compare it to your last project
 
 ## Session 5 Deep Deep Q-learning to Drive MountainCar - Sponsored by GET, the new ride-hailing service in Thailand
 *Continuous States and Discrete Actions*
@@ -111,12 +129,24 @@ Use your first neural network in a task challenging for linear models to underst
     * Multi-step learning
     * Distributional RL
     * Noisy networks
-* Take-home Challenges: Implement Rainbow and compare it to your last project
+* Challenges: Implement Rainbow to solve `MountainCarContinuous-v0` and compare it to your last project
 
-## Session 6 Actor-Critic Methods
-* Policy-based vs value-based deep reinforcement learning
-* Vanilla Actor-Critic
-* DDPG
+## Session 6 Continuous Control with Deep Deterministic Policy Gradient
+*Continuous States and Continuous Actions*
+* Policy-based vs Value-based Methods
+* Pendulum-v0 environment
+* Deep Deterministic Policy Gradient (DDPG)
+* Train Your Own DDPG Agent:
+    * Hyperparameter tuning
+    * Reward engineering
+* How DDPG Agent Learns
+    * Critic update
+    * Actor update
+    
+* Challenges:
+* Try to beat [OpenAI leaderboard](https://github.com/openai/gym/wiki/Leaderboard) 100-episode average of -123.11 ± 6.86 for `Pendulum-v0`
+* Implement DDPG to solve [MountainCarContinuous-v0](https://github.com/openai/gym/wiki/MountainCarContinuous-v0)
+* What are other methods that can handle continuous action space except for DDPG? Look up Proximal Policy Optimization (PPO) and Soft Actor-Critic (SAC).
 
 ## Session 6.5 Advanced Actor-Critic Methods
 * A2C
