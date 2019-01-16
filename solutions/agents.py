@@ -314,6 +314,136 @@ class TaxiAgent:
         #calculate update equation
         self.q[state][action] = self.q[state][action] + (self.alpha * (new_q - self.q[state][action]))
 
+class PGAgent:
+    def __init__(self, env, state_size, action_size, hidden_size, lr = 1e-2):
+        self.env = env
+        self.state_size = state_size
+        self.action_size = action_size
+        self.hidden_size = hidden_size
+        self.policy = PolicyNetwork(state_size,action_size,hidden_size).to(device)
+        self.optimizer = optim.Adam(self.policy.parameters(), lr=lr)
+        
+    def play_episode(self, t_max=2000, nb_episode = 1):
+        
+        #collection of trajectories
+        trajectories = []
+
+        for e in range(nb_episode):
+            #each trajectory
+            states= []
+            actions = []
+            log_probs = []
+            rewards = []
+            dones = []
+
+            #initialize state
+            state = self.env.reset()
+            for t in range(t_max):
+                state_tensor = torch.tensor(state, dtype=torch.float32, device=device).unsqueeze(0)
+
+                #get action and log prob
+                dist = self.policy(state_tensor)
+                action = dist.sample()
+                log_prob = dist.log_prob(action) #do not detach from graph as we need this for computing loss
+                action = action.item()
+
+                #environment step
+                next_state, reward, done, info = env.step(action)
+
+                #tuple
+                states.append(state)
+                actions.append(action)
+                log_probs.append(log_prob)
+                rewards.append(reward)
+                dones.append(done)
+
+                #advance to next state
+                state = next_state
+
+                #break if done
+                if done: break
+
+            #create and append trajectories
+            trajectory = (states,actions,log_probs,rewards,dones)
+            trajectories.append(trajectory)
+
+        return(trajectories)
+
+
+    def discounted_rewards(self, rewards, dones, gamma=0.99, normalized=True):
+        '''
+        Get discounted rewards
+        '''
+        g = 0
+        returns = []
+        #iterate from the last reward first; e.g. rewards = [0,1,2]
+        #we iterate from 2, 1, 0
+        for i in reversed(range(len(rewards))):
+            #calculate discounted reward at timestep i
+            #discounted reward = current reward + gamma * discounted reward from next timestep i+1
+            #check if it's done then don't add up future discounted reward 
+            g = rewards[i] + gamma * g * (1-dones[i])
+            #insert this in the front of the array (since we are doing things in reverse)
+            returns.insert(0, g)
+
+        #normalize rewards
+        if normalized:
+            returns_avg = np.mean(returns)
+            returns_std = np.std(returns)
+            returns_std = max(1e-8, returns_std)
+            returns_normalized = (returns - returns_avg) / (returns_std)
+            returns = returns_normalized
+        return(returns)
+    
+    def act(self, state):
+        '''
+        Get stochastic action based on state
+        '''
+        state_tensor = torch.tensor(state, dtype=torch.float32, device=device).unsqueeze(0)
+        dist = self.policy(state_tensor)
+        action = dist.sample().item()
+        return(action)
+
+    def surrogate(self, rewards, dones, log_probs, gamma = 0.99, normalized=True):
+        '''
+        Get surrogate function to optimize by gradient ascent
+        '''
+        #get discounted rewards
+        gs = self.discounted_rewards(rewards, dones, gamma, normalized)
+
+        #loss is (log) probability of doing an action times its discounted (normalized) rewards
+        loss = log_probs * gs
+        
+        #minus sign for telling pytorch we are doing gradient **ascent**
+        return(-loss.sum())
+    
+    def train(self, t_max = 2000, nb_episode=1):
+        '''
+        Train for a number of episodes
+        '''
+        scores = 0
+        losses = 0
+        #collect trajectories
+        for trajectory in self.play_episode(t_max=t_max, nb_episode=nb_episode):
+            states, actions, log_probs, rewards, dones = trajectory
+
+            #calculate loss
+            loss = self.surrogate(rewards,dones, log_probs, gamma=0.99, normalized=True)
+            #run optimizer
+            self.optimizer.zero_grad()
+            loss.backward()
+            self.optimizer.step()
+            
+            scores += sum(rewards)
+            losses += loss
+        
+        #average across episodes learned
+        scores /= nb_episode
+        losses /= nb_episode
+        
+        return(losses,scores)
+                
+    
 class DQNAgent:
     def __init__(self, state_size = 2, action_size = 3, replay_memory = None, seed = 1412,
         lr = 1e-3 / 4, bs = 64, nb_hidden = 256, clip = 1.,

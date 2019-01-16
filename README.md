@@ -62,6 +62,7 @@ Each notebook contains the content and code-along of each session. We recommend 
     
 ## Session 3b Neural Networks in Pytorch - Sponsored by GET, the new ride-hailing service in Thailand
 *Optional*
+
 1. **Building Blocks** 
 
 Familiarize ourselves with basic building blocks of a neural network in PyTorch such as tensors and layers
@@ -149,8 +150,9 @@ Use your first neural network in a task challenging for linear models to underst
 * What are other methods that can handle continuous action space except for DDPG? Look up Proximal Policy Optimization (PPO) and Soft Actor-Critic (SAC).
 
 ## Session 6.5 Advanced Actor-Critic Methods
-* A2C
-* A3C
+*Continuous States and Continuous Actions*
+* A2C / A3C
+* PPO
 * SAC
 
 
