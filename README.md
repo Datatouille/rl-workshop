@@ -1,4 +1,4 @@
-# Bangkok School of AI - Reinforcement Learning Workshop
+# Reinforcement Learning Workshop
 
 ## How to Use Notebooks
 
